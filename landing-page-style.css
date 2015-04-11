@@ -1,5 +1,7 @@
 #music-player {
-	
+	margin: auto;
+	max-width: 70%;
+	background-color: red;
 }
 #music-waveform {
 	
