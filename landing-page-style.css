@@ -1,12 +1,15 @@
+body {
+	background-color: #34495e;
+}
 #music-player {
 	margin: auto;
 	max-width: 70%;
-	background-color: #34495e;
+	background-color: red;
 	
 }
 p {
-		font-family: "Times New Roman";
-		color: white;
+	font-family: "Times New Roman";
+	color: white;
 }
 #music-waveform {
 	
