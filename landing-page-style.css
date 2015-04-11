@@ -1,7 +1,12 @@
 #music-player {
 	margin: auto;
 	max-width: 70%;
-	background-color: red;
+	background-color: #34495e;
+	
+}
+p {
+		font-family: "Times New Roman";
+		color: white;
 }
 #music-waveform {
 	
