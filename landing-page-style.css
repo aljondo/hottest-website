@@ -1,25 +1,19 @@
 body {
 	background-color: #34495e;
 }
+.hide-this-shit {
+	display: none;
+}
 #music-player {
 	margin: auto;
 	max-width: 70%;
 	min-width: 50vh;
 	background-color: #34495e;
-	margin-top: 30vh;
-	border-radius: 5px;
-	border-style: solid;
-	border-width: 1px;
-}
-#choose-song {
-	font-family: "Times New Roman";
-	color: white;
-	margin-left: 3vh;
+	margin-top: 20vh;	
 }
 #music-waveform {
-	border-radius: 5px;
-	border-style: solid;
-	border-width: 1px;
+}
+#music-waveform {
 }
 #play-pause-border {
 	margin: auto;
@@ -29,20 +23,5 @@ body {
 	border-style: solid;
 	border-width: 2px;
 	border-radius: 50%;
+	opacity: 0;
 }
-.play-pause {
-    width: 0px;
-    height: 0px;
-    margin-left: 50%;
-    margin-top: 50%;
-    left: -27px;
-    top: -50px;
-    position: relative;
-    border-top: 50px solid transparent;
-    border-bottom: 50px solid transparent;
-    border-left: 80px solid #22a9db;
-    z-index: 2;
-    -webkit-transition: all .3s;
-    -moz-transition: all .3s;
-    transition: all .3s;
-} 
