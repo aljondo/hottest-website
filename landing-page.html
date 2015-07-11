@@ -2,11 +2,11 @@
 <html>
 <head>
   <link type="text/css" rel="stylesheet" href="landing-page-style.css"/>
-  <link href="bootstrap-3.3.2-dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="landing-page-script.js"></script>
   <script src="WaveformGenerator2.js"></script>
+  <script src="soundmanager2.js"></script>
   <title>Hottest Website 2015</title>
-  <link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
+  <!--<link rel="apple-touch-icon-precomposed" sizes="57x57" href="apple-touch-icon-57x57.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="apple-touch-icon-114x114.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="apple-touch-icon-72x72.png" />
 	<link rel="apple-touch-icon-precomposed" sizes="144x144" href="apple-touch-icon-144x144.png" />
@@ -25,12 +25,15 @@
 	<meta name="msapplication-square70x70logo" content="mstile-70x70.png" />
 	<meta name="msapplication-square150x150logo" content="mstile-150x150.png" />
 	<meta name="msapplication-wide310x150logo" content="mstile-310x150.png" />
-	<meta name="msapplication-square310x310logo" content="mstile-310x310.png" />
+	<meta name="msapplication-square310x310logo" content="mstile-310x310.png" />-->
 </head>
 <body>
-  <input type="file">
-  <audio controls class="hide-this-shit" id="uploaded-song"></audio>
+  <input type="file" accept="audio/*">
+  <audio controls class="hide-this-shit" id="uploaded-song" oncanplay="init()"></audio>
   <div id="music-player">
+      <div id="music-timer">
+        <p>TIME<p>
+      </div>
       <div id="music-waveform">
         <div id="svg" style="width:100%;"></div>
       </div>
@@ -256,5 +259,30 @@
 
 		});
 	</script>
+  <nav id="context-menu" class="context-menu">
+    <ul class="context-menu__items">
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link">Add red light event</a>
+      </li>
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link">Add orange light event</a>
+      </li>
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link">Add green light event</a>
+      </li>
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link">Add blue light event</a>
+      </li>
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link">Add purple light event</a>
+      </li>
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link">Add white light event</a>
+      </li>
+      <li class="context-menu__item">
+        <a href="#" class="context-menu__link">Add blacklight event</a>
+      </li>
+    </ul>
+  </nav>
 </body>
 </html>
