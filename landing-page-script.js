@@ -21,19 +21,30 @@ var upcomingLightEvents;
 var songLength;
 var currentTime;
 
+var menu;
+var menuState;
+var activeMenu;
+
 //calls when song is uploaded
 function init() {
     console.log("init is being called");
     button = document.getElementById('play-pause-border');
     musicPlayer = document.getElementById('music-player');
     waveform = document.getElementById('music-waveform');
-    waveform.addEventListener("click", getClickXPosition, false);
+    //waveform.addEventListener("click", getClickXPosition, false);
     audio = document.getElementById('uploaded-song');
     songWidth = waveform.clientWidth;
 
     lightEvents = new Array();
     pastLightEvents = new Array();
     upcomingLightEvents = new Array();
+
+    menu = document.querySelector("#context-menu");
+    menuState = 0;
+    activeMenu = "context-menu--active"
+
+    //waveform click listeners
+    waveform.addEventListener("contextmenu", contextMenuHelper);
 
     songLength = audio.duration;
     unfade(button);
@@ -51,6 +62,17 @@ function getClickXPosition(e) {
     addLightEventWithPosition(xPos);
 }
 
+function contextMenuHelper(e) {
+    e.preventDefault();
+    toggleMenuOn();
+}
+
+function toggleMenuOn() {
+    if ( menuState !== 1 ) {
+        menuState = 1;
+        menu.classList.add(activeMenu);
+  } 
+}
 //at this point this function creates a light event of a random color
 function addLightEventWithPosition(xPos) {
     var eventTime = (xPos / songWidth) * songLength;

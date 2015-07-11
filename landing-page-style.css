@@ -24,7 +24,17 @@ body {
 	opacity: 0;
 }
 
-
+/*
+  everything about that context menu
+*/
+.context-menu {
+  display: none;
+  position: absolute;
+  z-index: 10;
+}
+.context-menu--active {
+  display: block;
+}
 /*stuff that i apparently dont need:
 
 section {
