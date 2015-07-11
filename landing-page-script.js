@@ -36,9 +36,14 @@ function init() {
     upcomingLightEvents = new Array();
 
     songLength = audio.duration;
+    unfade(button);
     console.log(songLength)
 }
 
+/*
+    //responding to clicks 'n stuff 
+    //seeking, adding light events, etc.
+*/
 function getClickXPosition(e) {
     var position = waveform.getBoundingClientRect();
     var xPos = e.clientX - position.left;
@@ -120,51 +125,11 @@ function addLightEventInOrder(lightEvent) {
     }
     //console.log("the list of upcoming light events is now length " + upcomingLightEvents.length)
 }
-/*upcomingLightEvents[0] = new LightEvent("#0000B8", 1);
-upcomingLightEvents[1] = new LightEvent("#FF3333", 2);
-upcomingLightEvents[2] = new LightEvent("#0000B8", 3);
-upcomingLightEvents[3] = new LightEvent("#659D32", 4);
-upcomingLightEvents[4] = new LightEvent("#0000B8", 5);
-upcomingLightEvents[5] = new LightEvent("#FF3333", 6);
-upcomingLightEvents[6] = new LightEvent("#0000B8", 7);
-upcomingLightEvents[7] = new LightEvent("#659D32", 8);
-upcomingLightEvents[8] = new LightEvent("#0000B8", 9);
-upcomingLightEvents[9] = new LightEvent("#FF3333", 10);
-upcomingLightEvents[10] = new LightEvent("#0000B8", 11);
-upcomingLightEvents[11] = new LightEvent("#659D32", 12);
-upcomingLightEvents[12] = new LightEvent("#0000B8", 13);
-upcomingLightEvents[13] = new LightEvent("#FF3333", 14);
-upcomingLightEvents[14] = new LightEvent("#0000B8", 15);
-upcomingLightEvents[15] = new LightEvent("#659D32", 16);
-upcomingLightEvents[16] = new LightEvent("#0000B8", 17);*/
 
-/*upcomingLightEvents[0] = new LightEvent("#0000B8", 1);
-upcomingLightEvents[1] = new LightEvent("#FF3333", 2);
-upcomingLightEvents[2] = new LightEvent("#0000B8", 3);
-upcomingLightEvents[3] = new LightEvent("#000", 3);
-upcomingLightEvents[4] = new LightEvent("#659D32", 4);
-upcomingLightEvents[5] = new LightEvent("#0000B8", 5);
-upcomingLightEvents[6] = new LightEvent("#FF3333", 6);
-upcomingLightEvents[7] = new LightEvent("#000", 6);
-upcomingLightEvents[8] = new LightEvent("#0000B8", 7);
-upcomingLightEvents[9] = new LightEvent("#659D32", 8);
-upcomingLightEvents[10] = new LightEvent("#0000B8", 9);
-upcomingLightEvents[11] = new LightEvent("#red", 9);
-upcomingLightEvents[12] = new LightEvent("#blue", 9);
-upcomingLightEvents[13] = new LightEvent("#durward", 9);
-upcomingLightEvents[14] = new LightEvent("#030", 9);
-upcomingLightEvents[15] = new LightEvent("#FF3333", 10);
-upcomingLightEvents[16] = new LightEvent("#0000B8", 11);
-upcomingLightEvents[17] = new LightEvent("#659D32", 12);
-upcomingLightEvents[18] = new LightEvent("#0000B8", 13);
-upcomingLightEvents[19] = new LightEvent("#FF3333", 14);
-upcomingLightEvents[20] = new LightEvent("#0000B8", 15);
-upcomingLightEvents[21] = new LightEvent("#000", 15);
-upcomingLightEvents[22] = new LightEvent("#659D32", 16);
-upcomingLightEvents[23] = new LightEvent("#0000B8", 17);
-upcomingLightEvents[24] = new LightEvent("#000", 17);
-console.log("length of light events: " + upcomingLightEvents);*/
 
+/*
+    //this is what happens when you press play
+*/
 function play() {
     //var button = document.getElementById('play-pause-border');
     //var musicPlayer = document.getElementById('music-player');
@@ -218,6 +183,9 @@ function runEvent(lightEvent) {
     console.log("The color ran at " + lightEvent.time + " is " + lightEvent.color);
 }
 
+/*
+    //testing functions
+*/
 //testing! prints out all times in an array, in order
 function printArray() {
     var arrayString = "";
@@ -229,6 +197,9 @@ function printArray() {
     console.log(arrayString)
 }
 
+/*
+    //something something frontend functions
+*/
 function unfade(element) {
     var op = 0.1;  // initial opacity
     element.style.display = 'block';
