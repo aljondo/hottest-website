@@ -43,8 +43,10 @@ function init() {
     menuState = 0;
     activeMenu = "context-menu--active"
 
-    //waveform click listeners
-    waveform.addEventListener("contextmenu", contextMenuHelper);
+    //listeners
+    document.addEventListener("contextmenu", contextMenuListener);
+    document.addEventListener("click", clickListener);
+    keyupListener();
 
     songLength = audio.duration;
     unfade(button);
@@ -55,24 +57,65 @@ function init() {
     //responding to clicks 'n stuff 
     //seeking, adding light events, etc.
 */
+function contextMenuListener(e) {
+    if(clickInsideElement(e, 'waveform')) {
+      e.preventDefault();
+      toggleMenuOn();
+      console.log("GOT EM")
+    } else {
+      toggleMenuOff();
+      console.log("didnt got em")
+    }
+}
+
+function clickListener(e) {
+    //this doesnt listen for seeking yet
+    var button = e.which || e.button;
+    if ( button === 1 ) {
+      toggleMenuOff();
+    }
+}
+
+//returns the X position of said click
 function getClickXPosition(e) {
     var position = waveform.getBoundingClientRect();
     var xPos = e.clientX - position.left;
+    return xPos;
     //console.log("click noted at x: " + xPos + "!");
-    addLightEventWithPosition(xPos);
-}
-
-function contextMenuHelper(e) {
-    e.preventDefault();
-    toggleMenuOn();
+    //addLightEventWithPosition(xPos);
 }
 
 function toggleMenuOn() {
-    if ( menuState !== 1 ) {
+    if(menuState !== 1) {
         menuState = 1;
         menu.classList.add(activeMenu);
   } 
 }
+
+function toggleMenuOff() {
+  if ( menuState !== 0 ) {
+    menuState = 0;
+    menu.classList.remove(activeMenu);
+  }
+}
+
+//determines if a click is inside the given element classname
+function clickInsideElement( e, className ) {
+  var el = e.srcElement || e.target;
+ 
+  if ( el.classList.contains(className) ) {
+    return el;
+  } else {
+    while ( el = el.parentNode ) {
+      if ( el.classList && el.classList.contains(className) ) {
+        return el;
+      }
+    }
+  }
+ 
+  return false;
+}
+
 //at this point this function creates a light event of a random color
 function addLightEventWithPosition(xPos) {
     var eventTime = (xPos / songWidth) * songLength;
@@ -235,3 +278,13 @@ function unfade(element) {
     }, 10);
 }
 
+/*
+    //helper functions af  
+*/
+function keyupListener() {
+  window.onkeyup = function(e) {
+    if ( e.keyCode === 27 ) {
+      toggleMenuOff();
+    }
+  }
+}
