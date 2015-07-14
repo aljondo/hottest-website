@@ -21,6 +21,7 @@ body {
 	border-style: solid;
 	border-width: 2px;
 	border-radius: 50%;
+
 	opacity: 0;
 }
 
@@ -28,13 +29,79 @@ body {
   everything about that context menu
 */
 .context-menu {
-  display: none;
-  position: absolute;
-  z-index: 10;
+ 	display: none;
+	position: absolute;
+  	z-index: 10;
+  	padding: 12px 0;
+  	width: 240px;
+  	background-color: #fff;
+  	border: solid 1px #dfdfdf;
+  	box-shadow: 1px 1px 2px #cfcfcf;
 }
+
 .context-menu--active {
-  display: block;
+  	display: block;
 }
+
+.context-menu__items {
+  	list-style: none;
+  	margin: 0;
+  	padding: 0;
+}
+
+.context-menu__item {
+  	display: block;
+  	margin-bottom: 4px;
+}
+
+.context-menu__item:last-child {
+ 	margin-bottom: 0;
+}
+
+.context-menu__link {
+  	display: block;
+  	padding: 4px 12px;
+  	color: #0066aa;
+  	text-decoration: none;
+  	transition: all 0.3s ease 0s;
+}
+
+/*still in the context menu, this should make each one a different color. i could/should probably be doing this in javascript*/
+#redLink:hover {
+  	color: #fff;
+  	background-color: #ff0000;
+}
+
+#orangeLink:hover {
+  	color: #fff;
+  	background-color: #ffa500;
+}
+
+#greenLink:hover {
+  	color: #fff;
+  	background-color: #00ff00;
+}
+
+#blueLink:hover {
+  	color: #fff;
+  	background-color: #0000ff;
+}
+#purpleLink:hover {
+	color: #fff;
+ 	background-color: #551a8b;
+}
+#whiteLink:hover {
+	color: #000;
+ 	background-color: #ffffff;
+}
+#blackLink:hover {
+	color: #fff;
+ 	background-color: #000;
+}
+
+
+
+
 /*stuff that i apparently dont need:
 
 section {

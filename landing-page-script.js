@@ -7,7 +7,7 @@ function LightEvent(color, time) {
     this.time = time;
 }
 
-//global variables af
+
 var button;
 var musicPlayer;
 var audio;
@@ -21,6 +21,7 @@ var upcomingLightEvents;
 var songLength;
 var currentTime;
 
+//anything having to do with a menu
 var menu;
 var menuState;
 var activeMenu;
@@ -34,6 +35,8 @@ var windowHeight;
 var clickCoords;
 var clickCoordsX;
 var clickCoordsY;
+//saves xPosition relative to waveform when an event is created
+var xPos;
 
 //calls when song is uploaded
 function init() {
@@ -103,6 +106,11 @@ function positionMenu(e) {
     } else {
         menu.style.top = clickCoordsY + "px";
     }
+
+    //calculating the xPos of the click when the menu is created will help create a light event at the right place
+    var position = waveform.getBoundingClientRect();
+    xPos = e.clientX - position.left;
+    console.log("the click is at " + xPos)
 }
 
 function clickListener(e) {
@@ -174,6 +182,36 @@ function clickInsideElement( e, className ) {
   }
  
   return false;
+}
+
+//called by adding a light event from the context menu
+function addLightEventFromContextMenu(color) {
+    var eventTime = (xPos / songWidth) * songLength;
+    eventTime = Math.round(eventTime * 10) / 10;
+    console.log(color)
+    switch(color) {
+        case 'red':
+            addLightEventInOrder(new LightEvent("#ff0000", eventTime))
+            break;
+        case 'orange':
+            addLightEventInOrder(new LightEvent("#ffa500", eventTime));
+            break;
+        case 'green':
+            addLightEventInOrder(new LightEvent("#00ff00", eventTime));
+            break;
+        case 'blue':
+            addLightEventInOrder(new LightEvent("#0000ff", eventTime));
+            break;
+        case 'purple':
+            addLightEventInOrder(new LightEvent("#551a8b", eventTime));
+            break;
+        case 'white':
+            addLightEventInOrder(new LightEvent("#ffffff", eventTime));
+            break;
+        case 'black':
+            addLightEventInOrder(new LightEvent("#000000", eventTime));
+            break;
+    }
 }
 
 //at this point this function creates a light event of a random color
