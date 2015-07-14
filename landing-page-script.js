@@ -24,6 +24,16 @@ var currentTime;
 var menu;
 var menuState;
 var activeMenu;
+var menuPosition;
+var menuPositionX;
+var menuPositionY;
+var menuWidth;
+var menuHeight;
+var windowWidth;
+var windowHeight;
+var clickCoords;
+var clickCoordsX;
+var clickCoordsY;
 
 //calls when song is uploaded
 function init() {
@@ -47,6 +57,7 @@ function init() {
     document.addEventListener("contextmenu", contextMenuListener);
     document.addEventListener("click", clickListener);
     keyupListener();
+    resizeListener();
 
     songLength = audio.duration;
     unfade(button);
@@ -61,10 +72,36 @@ function contextMenuListener(e) {
     if(clickInsideElement(e, 'waveform')) {
       e.preventDefault();
       toggleMenuOn();
+      positionMenu(e);
       console.log("GOT EM")
     } else {
       toggleMenuOff();
       console.log("didnt got em")
+    }
+}
+
+//when the waveform exists inside it's own little zoomable view...this might need some work. or it might now. DESIGN DECISIONS!1!1
+function positionMenu(e) {
+    clickCoords = getPosition(e);
+    clickCoordsX = clickCoords.x;
+    clickCoordsY = clickCoords.y;
+ 
+    menuWidth = menu.offsetWidth + 4;
+    menuHeight = menu.offsetHeight + 4;
+ 
+    windowWidth = window.innerWidth;
+    windowHeight = window.innerHeight;
+ 
+    if ( (windowWidth - clickCoordsX) < menuWidth ) {
+        menu.style.left = windowWidth - menuWidth + "px";
+    } else {
+        menu.style.left = clickCoordsX + "px";
+    }
+ 
+    if ( (windowHeight - clickCoordsY) < menuHeight ) {
+        menu.style.top = windowHeight - menuHeight + "px";
+    } else {
+        menu.style.top = clickCoordsY + "px";
     }
 }
 
@@ -76,7 +113,30 @@ function clickListener(e) {
     }
 }
 
-//returns the X position of said click
+//POSITION FUNCTION:
+function getPosition(e) {
+  var posx = 0;
+  var posy = 0;
+ 
+  if (!e) var e = window.event;
+ 
+  if (e.pageX || e.pageY) {
+    posx = e.pageX;
+    posy = e.pageY;
+  } else if (e.clientX || e.clientY) {
+    posx = e.clientX + document.body.scrollLeft + 
+                       document.documentElement.scrollLeft;
+    posy = e.clientY + document.body.scrollTop + 
+                       document.documentElement.scrollTop;
+  }
+ 
+  return {
+    x: posx,
+    y: posy
+  }
+}
+
+//POSITION FUNCTION: returns the X position of said click
 function getClickXPosition(e) {
     var position = waveform.getBoundingClientRect();
     var xPos = e.clientX - position.left;
@@ -287,4 +347,10 @@ function keyupListener() {
       toggleMenuOff();
     }
   }
+}
+
+function resizeListener() {
+  window.onresize = function(e) {
+    toggleMenuOff();
+  };
 }
