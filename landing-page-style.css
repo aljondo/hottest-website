@@ -6,7 +6,7 @@ body {
 }
 #music-player {
 	margin: auto;
-	max-width: 80%;
+	max-width: 100%;
 	min-width: 50vh;
 	background-color: #34495e;
 	margin-top: 20vh;	
