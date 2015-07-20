@@ -15,8 +15,8 @@ var waveform;
 var songWidth;
 
 var lightEvents;
-var pastLightEvents;
-var upcomingLightEvents;
+var pastLightEvents = new Array();
+var upcomingLightEvents = new Array();
 
 var songLength;
 var currentTime;
@@ -37,6 +37,7 @@ var clickCoordsX;
 var clickCoordsY;
 //saves xPosition relative to waveform when an event is created
 var xPos;
+//for the purposes of updating the song timer 
 
 //calls when song is uploaded
 function init() {
@@ -44,13 +45,12 @@ function init() {
     button = document.getElementById('play-pause-border');
     musicPlayer = document.getElementById('music-player');
     waveform = document.getElementById('music-waveform');
-    //waveform.addEventListener("click", getClickXPosition, false);
     audio = document.getElementById('uploaded-song');
     songWidth = waveform.clientWidth;
 
-    lightEvents = new Array();
-    pastLightEvents = new Array();
-    upcomingLightEvents = new Array();
+    //lightEvents = new Array();
+    //pastLightEvents = new Array();
+    //upcomingLightEvents = new Array();
 
     menu = document.querySelector("#context-menu");
     menuState = 0;
@@ -65,6 +65,10 @@ function init() {
     songLength = audio.duration;
     unfade(button);
     console.log(songLength)
+
+
+    //console.log(upcomingLightEvents.length);
+    //console.log(pastLightEvents.length);
 }
 
 /*
@@ -76,11 +80,69 @@ function contextMenuListener(e) {
       e.preventDefault();
       toggleMenuOn();
       positionMenu(e);
-      console.log("GOT EM")
+      //console.log("GOT EM")
     } else {
       toggleMenuOff();
-      console.log("didnt got em")
+      //console.log("didnt got em")
     }
+}
+
+function clickListener(e) {
+    //this doesnt listen for seeking yet
+    var button = e.which || e.button;
+    if ( button === 1 ) {
+      toggleMenuOff();
+    }
+    if(clickInsideElement(e, 'waveform')) {
+        xPosFromClick(e);
+        seek();
+    } 
+}
+
+function seek() {
+    var eventTime = (xPos / songWidth) * songLength;
+    var previousTime = currentTime;
+    //console.log(previousTime)
+    audio.currentTime =  "" + Math.round(eventTime * 10) / 10;
+    currentTime = audio.currentTime;
+    resortLightEvents(previousTime);
+}
+
+function resortLightEvents(previousTime) {
+    //console.log("previous time is " + previousTime);
+    //console.log("current time is " + currentTime);
+    console.log(upcomingLightEvents[0])
+
+    if(previousTime > currentTime) {//user jumps back in the song
+        if(pastLightEvents.length > 0) {
+            for(var i = pastLightEvents.length - 1; i >= 0; i--) {
+                //console.log(upcomingLightEvents[i])
+                if(pastLightEvents[i].time > currentTime) {
+                    //console.log("event time: " + pastLightEvents[i].time + " currentTime: " + currentTime)
+                    upcomingLightEvents.unshift(pastLightEvents.pop());
+                }
+                else {
+                   break;
+                }
+            }
+        }
+    }
+    else if(previousTime < currentTime) {//user jumps forward in the song
+        for(var i = 0; i < upcomingLightEvents.length; i++) {
+            if(upcomingLightEvents[i].time  < currentTime) {
+                var temp = upcomingLightEvents.shift();
+                pastLightEvents.push(temp);
+                console.log("this is an instance of splice that is pushed into past light events")
+                console.log(temp)
+                i--;
+            }
+            else {
+                break;
+            }
+        }
+    }
+    console.log("upcoming light events has " + upcomingLightEvents.length);
+    console.log("past light events has " + pastLightEvents.length);
 }
 
 //when the waveform exists inside it's own little zoomable view...this might need some work. or it might now. DESIGN DECISIONS!1!1
@@ -108,17 +170,8 @@ function positionMenu(e) {
     }
 
     //calculating the xPos of the click when the menu is created will help create a light event at the right place
-    var position = waveform.getBoundingClientRect();
-    xPos = e.clientX - position.left;
-    console.log("the click is at " + xPos)
-}
 
-function clickListener(e) {
-    //this doesnt listen for seeking yet
-    var button = e.which || e.button;
-    if ( button === 1 ) {
-      toggleMenuOff();
-    }
+    xPosFromClick(e);
 }
 
 //POSITION FUNCTION:
@@ -144,14 +197,6 @@ function getPosition(e) {
   }
 }
 
-//POSITION FUNCTION: returns the X position of said click
-function getClickXPosition(e) {
-    var position = waveform.getBoundingClientRect();
-    var xPos = e.clientX - position.left;
-    return xPos;
-    //console.log("click noted at x: " + xPos + "!");
-    //addLightEventWithPosition(xPos);
-}
 
 function toggleMenuOn() {
     if(menuState !== 1) {
@@ -188,7 +233,7 @@ function clickInsideElement( e, className ) {
 function addLightEventFromContextMenu(color) {
     var eventTime = (xPos / songWidth) * songLength;
     eventTime = Math.round(eventTime * 10) / 10;
-    console.log(color)
+    //console.log(color)
     switch(color) {
         case 'red':
             addLightEventInOrder(new LightEvent("#ff0000", eventTime))
@@ -218,7 +263,7 @@ function addLightEventFromContextMenu(color) {
 function addLightEventWithPosition(xPos) {
     var eventTime = (xPos / songWidth) * songLength;
     eventTime = Math.round(eventTime * 10) / 10;
-    console.log("the event will be at " + eventTime + " seconds!");
+    //console.log("the event will be at " + eventTime + " seconds!");
     var randomColor = Math.floor((Math.random() * 10) + 1);
     switch(randomColor) {
         case 1:
@@ -255,7 +300,7 @@ function addLightEventWithPosition(xPos) {
 }
 
 function addLightEventInOrder(lightEvent) {
-    console.log(lightEvent.color)
+    //console.log(lightEvent.color)
     if(upcomingLightEvents.length === 0) {
         //console.log("you're adding one to an empty list") 
         upcomingLightEvents[0] = lightEvent;
@@ -264,7 +309,7 @@ function addLightEventInOrder(lightEvent) {
     else {
         if(lightEvent.time < upcomingLightEvents[0].time) {
             upcomingLightEvents.splice(0, 0, lightEvent);
-            console.log("you're adding one at the beginning");
+            //console.log("you're adding one at the beginning");
             //printArray();
         }
         else if(lightEvent.time > upcomingLightEvents[upcomingLightEvents.length - 1].time) {
@@ -289,6 +334,17 @@ function addLightEventInOrder(lightEvent) {
     //console.log("the list of upcoming light events is now length " + upcomingLightEvents.length)
 }
 
+function xPosFromClick(e) {
+    //calculating the xPos of the click when the menu is created will help create a light event at the right place
+    var position = waveform.getBoundingClientRect();
+    xPos = e.clientX - position.left;
+}
+
+function songTimeFromClick() {
+    eventTime = (xPos / songWidth) * songLength;
+    return eventTime;
+}
+
 
 /*
     //this is what happens when you press play
@@ -303,11 +359,14 @@ function play() {
 
         button.style.backgroundColor = '#efefef';
         musicPlayer.style.backgroundColor = '#000';
+        console.log(upcomingLightEvents.length)
     }else{
         audio.pause();
 
         button.style.backgroundColor = '#34495e';
         musicPlayer.style.backgroundColor = '#34495e';
+        //console.log(pastLightEvents);
+        //console.log("there are " + pastLightEvents.length + " events in past light events");
     }
 }
 
@@ -315,6 +374,8 @@ function checkForLightEvent(audio) {
     //console.log("is this even working?")
     //currentTime = Math.round(audio.currentTime);
     currentTime = Math.round(audio.currentTime * 10) / 10;
+    updateTimeInHtml(currentTime);//updates timer
+    console.log(currentTime);
     //console.log(currentTime)
     /*if(upcomingLightEvents.length > 0) { 
         //console.log(currentTime + " " + upcomingLightEvents[0].time);
@@ -331,7 +392,11 @@ function checkForLightEvent(audio) {
         }
         else if(currentTime === upcomingLightEvents[i].time) {
             runEvent(upcomingLightEvents[i]);
-            pastLightEvents[pastLightEvents.length] = upcomingLightEvents.splice(0, 1);
+            //console.log(upcomingLightEvents[0])
+            var temp = upcomingLightEvents.shift();
+            //console.log(temp);
+            //pastLightEvents[pastLightEvents.length] = upcomingLightEvents.splice(0, 1);   
+            pastLightEvents.push(temp);  
             i--;
             //console.log("Size of upcomingLightEvents: " + upcomingLightEvents.length);
             //console.log("Size of pastLightEvents: " + pastLightEvents.length);
@@ -343,7 +408,8 @@ function runEvent(lightEvent) {
     //var musicPlayer = document.getElementById('music-player');
     //console.log(lightEvent.color)
     musicPlayer.style.backgroundColor = lightEvent.color;
-    console.log("The color ran at " + lightEvent.time + " is " + lightEvent.color);
+    //console.log("The color ran at " + lightEvent.time + " is " + lightEvent.color);
+    //console.log(pastLightEvents[0])
 }
 
 /*
@@ -363,6 +429,13 @@ function printArray() {
 /*
     //something something frontend functions
 */
+function updateTimeInHtml(currentTime) {
+    var minutesText = currentTime;
+    var secondsText = currentTime;
+    minutesText = Math.floor(minutesText / 60);
+    secondsText = Math.floor(secondsText % 60);
+    document.getElementById("music-timer-text").innerHTML = minutesText + ":" + secondsText;
+}
 function unfade(element) {
     var op = 0.1;  // initial opacity
     element.style.display = 'block';

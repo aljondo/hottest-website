@@ -6,12 +6,15 @@ body {
 }
 #music-player {
 	margin: auto;
-	max-width: 70%;
+	max-width: 80%;
 	min-width: 50vh;
 	background-color: #34495e;
 	margin-top: 20vh;	
 }
 #music-waveform {
+}
+#music-timer {
+	color: #efefef;
 }
 #play-pause-border {
 	margin: auto;
