@@ -38,6 +38,7 @@ var WaveformGenerator = (function(audioBuffer, settingsObject) {
         }
         path.setAttribute('d', 'M' + x + ' ' + y + ' L' + x + ' ' + y + ' L' + x + ' ' + (y + height) + ' L' + x + ' ' + (y + height) + ' L' + x + ' ' + y + ' Z');
         path.className = _svg.id;
+        //path.id = 'b_' + x;
         _svg.appendChild(path);
     }
 

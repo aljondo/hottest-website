@@ -35,6 +35,8 @@ var windowHeight;
 var clickCoords;
 var clickCoordsX;
 var clickCoordsY;
+//saving the clicked on bar in the waveform. this should help indicate where light events are placed
+var bar;
 //saves xPosition relative to waveform when an event is created
 var xPos;
 //for the purposes of updating the song timer 
@@ -77,14 +79,19 @@ function init() {
 */
 function contextMenuListener(e) {
     if(clickInsideElement(e, 'waveform')) {
-      e.preventDefault();
-      toggleMenuOn();
-      positionMenu(e);
-      //console.log("GOT EM")
+        bar = e.target;
+        e.preventDefault();
+        toggleMenuOn();
+        positionMenu(e);
+        //console.log("GOT EM")
     } else {
-      toggleMenuOff();
-      //console.log("didnt got em")
+        toggleMenuOff();
+        //console.log("didnt got em")
     }
+    //console.log(bar);
+    //console.log(bar.style)
+    //bar.style.stroke = "#000"
+    console.log(bar.style);
 }
 
 function clickListener(e) {
@@ -231,70 +238,38 @@ function clickInsideElement( e, className ) {
 
 //called by adding a light event from the context menu
 function addLightEventFromContextMenu(color) {
+    console.log(bar);
     var eventTime = (xPos / songWidth) * songLength;
     eventTime = Math.round(eventTime * 10) / 10;
     //console.log(color)
     switch(color) {
         case 'red':
+            bar.style.stroke = "#ff0000"
             addLightEventInOrder(new LightEvent("#ff0000", eventTime))
             break;
         case 'orange':
+            bar.style.stroke = "#ffa500"
             addLightEventInOrder(new LightEvent("#ffa500", eventTime));
             break;
         case 'green':
+            bar.style.stroke = "#00ff00"
             addLightEventInOrder(new LightEvent("#00ff00", eventTime));
             break;
         case 'blue':
+            bar.style.stroke = "#0000ff"
             addLightEventInOrder(new LightEvent("#0000ff", eventTime));
             break;
         case 'purple':
+         bar.style.stroke = "#551a8b"
             addLightEventInOrder(new LightEvent("#551a8b", eventTime));
             break;
         case 'white':
+            bar.style.stroke = "#ffffff"    
             addLightEventInOrder(new LightEvent("#ffffff", eventTime));
             break;
         case 'black':
+            bar.style.stroke = "#000000"
             addLightEventInOrder(new LightEvent("#000000", eventTime));
-            break;
-    }
-}
-
-//at this point this function creates a light event of a random color
-function addLightEventWithPosition(xPos) {
-    var eventTime = (xPos / songWidth) * songLength;
-    eventTime = Math.round(eventTime * 10) / 10;
-    //console.log("the event will be at " + eventTime + " seconds!");
-    var randomColor = Math.floor((Math.random() * 10) + 1);
-    switch(randomColor) {
-        case 1:
-            addLightEventInOrder(new LightEvent("#ff0000", eventTime))
-            break;
-        case 2:
-            addLightEventInOrder(new LightEvent("#ffa500", eventTime));
-            break;
-        case 3:
-            addLightEventInOrder(new LightEvent("#ffff00", eventTime));
-            break;
-        case 4:
-            addLightEventInOrder(new LightEvent("#00ff00", eventTime));
-            break;
-        case 5:
-            addLightEventInOrder(new LightEvent("#0000ff", eventTime));
-            break;
-        case 6:
-            addLightEventInOrder(new LightEvent("#551a8b", eventTime));
-            break;
-        case 7:
-            addLightEventInOrder(new LightEvent("#ffffff", eventTime));
-            break;
-        case 8:
-            addLightEventInOrder(new LightEvent("#00ffff", eventTime));
-            break;
-        case 9:
-            addLightEventInOrder(new LightEvent("#CD2990", eventTime));
-            break;
-        case 10:
-            addLightEventInOrder(new LightEvent("#000", eventTime));
             break;
     }
 }
