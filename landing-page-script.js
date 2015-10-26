@@ -41,10 +41,13 @@ var bar;
 var xPos;
 //for the purposes of updating the song timer 
 
+//for zooming
+var zoomButton;
+var zoomState;
 //calls when song is uploaded
 function init() {
     console.log("init is being called");
-    button = document.getElementById('play-pause-border');
+    button = document.getElementById('play-pause-button');
     musicPlayer = document.getElementById('music-player');
     waveform = document.getElementById('music-waveform');
     audio = document.getElementById('uploaded-song');
@@ -64,11 +67,14 @@ function init() {
     keyupListener();
     resizeListener();
 
+    zoomState = 0;
+    zoomButton = document.getElementById('zoom');
+
     songLength = audio.duration;
     unfade(button);
     console.log(songLength)
 
-
+    console.log(musicPlayer.style.zIndex)
     //console.log(upcomingLightEvents.length);
     //console.log(pastLightEvents.length);
 }
@@ -104,6 +110,10 @@ function clickListener(e) {
         xPosFromClick(e);
         seek();
     } 
+    if(clickInsideElement(e, 'zoom')) {
+        console.log("pls")
+        zoom();
+    }
 }
 
 function seek() {
@@ -113,6 +123,7 @@ function seek() {
     audio.currentTime =  "" + Math.round(eventTime * 10) / 10;
     currentTime = audio.currentTime;
     resortLightEvents(previousTime);
+    musicPlayer.style.backgroundColor = '#000000';
 }
 
 function resortLightEvents(previousTime) {
@@ -244,20 +255,20 @@ function addLightEventFromContextMenu(color) {
     //console.log(color)
     switch(color) {
         case 'red':
-            bar.style.stroke = "#ff0000"
-            addLightEventInOrder(new LightEvent("#ff0000", eventTime))
+            bar.style.stroke = "#800000"
+            addLightEventInOrder(new LightEvent("#800000", eventTime))
             break;
         case 'orange':
-            bar.style.stroke = "#ffa500"
-            addLightEventInOrder(new LightEvent("#ffa500", eventTime));
+            bar.style.stroke = "#e68a00"
+            addLightEventInOrder(new LightEvent("#e68a00", eventTime));
             break;
         case 'green':
-            bar.style.stroke = "#00ff00"
-            addLightEventInOrder(new LightEvent("#00ff00", eventTime));
+            bar.style.stroke = "#7acc29"
+            addLightEventInOrder(new LightEvent("#7acc29", eventTime));
             break;
         case 'blue':
-            bar.style.stroke = "#0000ff"
-            addLightEventInOrder(new LightEvent("#0000ff", eventTime));
+            bar.style.stroke = "#1919f"
+            addLightEventInOrder(new LightEvent("#1919ff", eventTime));
             break;
         case 'purple':
          bar.style.stroke = "#551a8b"
@@ -439,4 +450,22 @@ function resizeListener() {
   window.onresize = function(e) {
     toggleMenuOff();
   };
+}
+
+function zoom (event) {
+    console.log("HEY")
+    if(zoomState === 0) {
+        $("#svg").width(
+            $("#svg").width() * 3
+        );
+        zoomState++;
+        songWidth = $("#svg").width();
+    }
+    else {
+        $("#svg").width(
+            $("#svg").width() / 3
+        );
+        zoomState--;
+        songWidth = $("#svg").width();
+    }
 }

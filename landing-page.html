@@ -4,11 +4,13 @@
   <link type="text/css" rel="stylesheet" href="landing-page-style.css"/>
   <script src="landing-page-script.js"></script>
   <script src="waveformscript.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
   <title>Hottest Website 2015</title>
 </head>
 <body>
   <input type="file" accept="audio/*">
   <audio controls class="hide-this-shit" id="uploaded-song"></audio>
+  <!--<div id="overlay"></div>-->
   <div id="music-player">
       <div id="music-timer">
         <p id="music-timer-text">0:00<p>
@@ -20,7 +22,11 @@
         <p></p>
       </div>
     </div>
-    <div id="play-pause-border" onClick="play()">
+    <div id="buttons">
+      <div class="button-left" id="play-pause-button" onClick="play()">
+      </div>
+      <div class="button-left zoom" id="zoom-button">
+      </div>
     </div>
     <div id="lights-bar, png">
 
@@ -41,17 +47,25 @@
           },
           waveform: {
             color: '#efefef',
-            width: 500,
-            height: 80
+            width: 1000,
+            height: 50
           }
       };
         new WaveformGenerator(event.target.result, settings).then(function(s) {
           document.querySelector('#svg').innerHTML = s;
+          //$('#music-waveform').css('mask',"url('exwave.png')")
+
+          //document.getElementById("music-waveform").style.backgroundColor = "#000"
           init();
         });
     };
     reader.readAsArrayBuffer(e.target.files[0]);
   }, false);
+  </script>
+  <script>
+
+  //$("#zoom-in-button").click(ZoomIn());
+  
   </script>
   <nav id="context-menu" class="context-menu">
     <ul class="context-menu__items">
